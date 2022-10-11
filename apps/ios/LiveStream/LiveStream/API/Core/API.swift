@@ -33,7 +33,7 @@ class API {
     private let session = Session()
     private let jsonEncoder = JSONEncoder()
     private let jsonDecoder = JSONDecoder()
-    private let url: String = <#BACKEND_URL#>
+    private let url: String = "https://twilio-live-interactive-audio-1866-dev.twil.io"
 
     init() {
         jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
