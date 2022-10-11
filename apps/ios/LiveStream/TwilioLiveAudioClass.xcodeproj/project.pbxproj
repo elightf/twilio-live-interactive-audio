@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		10CF973328F634C600A09E51 /* Datadog in Frameworks */ = {isa = PBXBuildFile; productRef = 10CF973228F634C600A09E51 /* Datadog */; };
 		DC00B355264DB58E002FA907 /* AppCenterManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC00B354264DB58E002FA907 /* AppCenterManager.swift */; };
 		DC13E01126094CFA00825137 /* PlayerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC13E01026094CFA00825137 /* PlayerManager.swift */; };
 		DC3850E32638626C004B9413 /* RemoveSpeakerRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3850E22638626C004B9413 /* RemoveSpeakerRequest.swift */; };
@@ -47,13 +48,11 @@
 		DCB3BAAA282C0EF400AF7072 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = DCB3BAA9282C0EF400AF7072 /* Alamofire */; };
 		DCB3BAB4282C106300AF7072 /* AppCenterAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = DCB3BAB3282C106300AF7072 /* AppCenterAnalytics */; };
 		DCB3BAB6282C106300AF7072 /* AppCenterCrashes in Frameworks */ = {isa = PBXBuildFile; productRef = DCB3BAB5282C106300AF7072 /* AppCenterCrashes */; };
-		DCB3BAB9282C10CF00AF7072 /* Datadog in Frameworks */ = {isa = PBXBuildFile; productRef = DCB3BAB8282C10CF00AF7072 /* Datadog */; };
 		DCB3BABC282C113B00AF7072 /* KeychainAccess in Frameworks */ = {isa = PBXBuildFile; productRef = DCB3BABB282C113B00AF7072 /* KeychainAccess */; };
 		DCB3BABF282C116C00AF7072 /* MBProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = DCB3BABE282C116C00AF7072 /* MBProgressHUD */; };
 		DCB3BAC2282C11C300AF7072 /* TwilioConversationsClient in Frameworks */ = {isa = PBXBuildFile; productRef = DCB3BAC1282C11C300AF7072 /* TwilioConversationsClient */; };
 		DCB3BAC5282C120F00AF7072 /* TwilioVideo in Frameworks */ = {isa = PBXBuildFile; productRef = DCB3BAC4282C120F00AF7072 /* TwilioVideo */; };
 		DCB3BACB282C143C00AF7072 /* TwilioLivePlayer in Frameworks */ = {isa = PBXBuildFile; productRef = DCB3BACA282C143C00AF7072 /* TwilioLivePlayer */; };
-		DCB3BACC282C22ED00AF7072 /* Datadog in Embed Frameworks */ = {isa = PBXBuildFile; productRef = DCB3BAB8282C10CF00AF7072 /* Datadog */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		DCBFBEDB262F77B3007F6424 /* PlayerParticipant.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCBFBEDA262F77B3007F6424 /* PlayerParticipant.swift */; };
 		DCBFBEDE262F77F1007F6424 /* TwilioLiveAudioClassSpeaker.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCBFBEDD262F77F1007F6424 /* TwilioLiveAudioClassSpeaker.swift */; };
 		DCBFBEE1262F7832007F6424 /* RoomParticipant.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCBFBEE0262F7832007F6424 /* RoomParticipant.swift */; };
@@ -90,7 +89,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				DCB3BACC282C22ED00AF7072 /* Datadog in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -176,11 +174,11 @@
 				DCB3BABF282C116C00AF7072 /* MBProgressHUD in Frameworks */,
 				DCB3BAB4282C106300AF7072 /* AppCenterAnalytics in Frameworks */,
 				DCB3BAC5282C120F00AF7072 /* TwilioVideo in Frameworks */,
+				10CF973328F634C600A09E51 /* Datadog in Frameworks */,
 				DCB3BAC2282C11C300AF7072 /* TwilioConversationsClient in Frameworks */,
 				DCB3BACB282C143C00AF7072 /* TwilioLivePlayer in Frameworks */,
 				DCB3BAB6282C106300AF7072 /* AppCenterCrashes in Frameworks */,
 				DCB3BAAA282C0EF400AF7072 /* Alamofire in Frameworks */,
-				DCB3BAB9282C10CF00AF7072 /* Datadog in Frameworks */,
 				DCB3BABC282C113B00AF7072 /* KeychainAccess in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -556,12 +554,12 @@
 				DCB3BAA9282C0EF400AF7072 /* Alamofire */,
 				DCB3BAB3282C106300AF7072 /* AppCenterAnalytics */,
 				DCB3BAB5282C106300AF7072 /* AppCenterCrashes */,
-				DCB3BAB8282C10CF00AF7072 /* Datadog */,
 				DCB3BABB282C113B00AF7072 /* KeychainAccess */,
 				DCB3BABE282C116C00AF7072 /* MBProgressHUD */,
 				DCB3BAC1282C11C300AF7072 /* TwilioConversationsClient */,
 				DCB3BAC4282C120F00AF7072 /* TwilioVideo */,
 				DCB3BACA282C143C00AF7072 /* TwilioLivePlayer */,
+				10CF973228F634C600A09E51 /* Datadog */,
 			);
 			productName = TwilioLiveAudioClass;
 			productReference = DCA23EDA25F93C580076C4FC /* TwilioLiveAudioClass.app */;
@@ -593,12 +591,12 @@
 			packageReferences = (
 				DCB3BAA8282C0EF400AF7072 /* XCRemoteSwiftPackageReference "Alamofire" */,
 				DCB3BAB2282C106300AF7072 /* XCRemoteSwiftPackageReference "appcenter-sdk-apple" */,
-				DCB3BAB7282C10CF00AF7072 /* XCRemoteSwiftPackageReference "dd-sdk-ios" */,
 				DCB3BABA282C113B00AF7072 /* XCRemoteSwiftPackageReference "KeychainAccess" */,
 				DCB3BABD282C116C00AF7072 /* XCRemoteSwiftPackageReference "MBProgressHUD" */,
 				DCB3BAC0282C11C300AF7072 /* XCRemoteSwiftPackageReference "conversations-ios" */,
 				DCB3BAC3282C120F00AF7072 /* XCRemoteSwiftPackageReference "twilio-video-ios" */,
 				DCB3BAC9282C143C00AF7072 /* XCRemoteSwiftPackageReference "twilio-live-player-ios" */,
+				10CF973128F634C600A09E51 /* XCRemoteSwiftPackageReference "dd-sdk-ios" */,
 			);
 			productRefGroup = DCA23EDB25F93C580076C4FC /* Products */;
 			projectDirPath = "";
@@ -906,6 +904,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		10CF973128F634C600A09E51 /* XCRemoteSwiftPackageReference "dd-sdk-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/DataDog/dd-sdk-ios";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.1.0;
+			};
+		};
 		DCB3BAA8282C0EF400AF7072 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Alamofire/Alamofire";
@@ -920,14 +926,6 @@
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 4.0.0;
-			};
-		};
-		DCB3BAB7282C10CF00AF7072 /* XCRemoteSwiftPackageReference "dd-sdk-ios" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/DataDog/dd-sdk-ios";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.12.0;
 			};
 		};
 		DCB3BABA282C113B00AF7072 /* XCRemoteSwiftPackageReference "KeychainAccess" */ = {
@@ -973,6 +971,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		10CF973228F634C600A09E51 /* Datadog */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 10CF973128F634C600A09E51 /* XCRemoteSwiftPackageReference "dd-sdk-ios" */;
+			productName = Datadog;
+		};
 		DCB3BAA9282C0EF400AF7072 /* Alamofire */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = DCB3BAA8282C0EF400AF7072 /* XCRemoteSwiftPackageReference "Alamofire" */;
@@ -987,11 +990,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = DCB3BAB2282C106300AF7072 /* XCRemoteSwiftPackageReference "appcenter-sdk-apple" */;
 			productName = AppCenterCrashes;
-		};
-		DCB3BAB8282C10CF00AF7072 /* Datadog */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = DCB3BAB7282C10CF00AF7072 /* XCRemoteSwiftPackageReference "dd-sdk-ios" */;
-			productName = Datadog;
 		};
 		DCB3BABB282C113B00AF7072 /* KeychainAccess */ = {
 			isa = XCSwiftPackageProductDependency;
