@@ -106,7 +106,7 @@ extension ConversationManager: TwilioConversationsClientDelegate {
         switch status {
         case .started, .conversationsListCompleted: return
         case .completed: getConversation()
-        case .failed: handleError(TwilioLiveAudioClassError.conversationSyncFailed)
+        case .failed: handleError(LiveStreamError.conversationSyncFailed)
         @unknown default: return
         }
     }

@@ -29,7 +29,7 @@ class RoomViewController: UICollectionViewController {
         let identity: String
     }
     
-    var liveStreamManager: TwilioLiveAudioClassManager!
+    var liveStreamManager: LiveStreamManager!
     private lazy var dataSource = makeDataSource()
     private var audioLevelTimer: Timer?
     
@@ -329,14 +329,14 @@ class RoomViewController: UICollectionViewController {
     }
 }
 
-extension RoomViewController: TwilioLiveAudioClassDelegate {
-    func liveStreamManagerIsConnecting(_ liveStreamManager: TwilioLiveAudioClassManager) {
+extension RoomViewController: LiveStreamDelegate {
+    func liveStreamManagerIsConnecting(_ liveStreamManager: LiveStreamManager) {
         guard viewIfLoaded?.window != nil else { return } // View is not visible yet
 
         showProgressHUD()
     }
     
-    func liveStreamManager(_ liveStreamManager: TwilioLiveAudioClassManager, didConnectWithError error: Error?) {
+    func liveStreamManager(_ liveStreamManager: LiveStreamManager, didConnectWithError error: Error?) {
         hideProgressHUD()
         configureToolbar()
         applySnapshot(animatingDifferences: true) // Handles inserts, deletes, and moves
@@ -351,15 +351,15 @@ extension RoomViewController: TwilioLiveAudioClassDelegate {
             }
         }
 
-        if let error = error as? TwilioLiveAudioClassError, error.isSpeakerMovedToAudienceByModeratorError {
+        if let error = error as? LiveStreamError, error.isSpeakerMovedToAudienceByModeratorError {
             showForceLeaveAlert()
         }
     }
 
-    func liveStreamManager(_ liveStreamManager: TwilioLiveAudioClassManager, didDisconnectWithError error: Error) {
+    func liveStreamManager(_ liveStreamManager: LiveStreamManager, didDisconnectWithError error: Error) {
         hideProgressHUD()
 
-        if let error = error as? TwilioLiveAudioClassError, error.isTwilioLiveAudioClassEndedByModeratorError {
+        if let error = error as? LiveStreamError, error.isLiveStreamEndedByModeratorError {
             let alert = UIAlertController(
                 title: "Room is no longer available",
                 message: "This room has been ended by the Room moderator.",
@@ -375,11 +375,11 @@ extension RoomViewController: TwilioLiveAudioClassDelegate {
         }
     }
     
-    func liveStreamManagerDidInsertOrDeleteOrMoveParticipants(_ liveStreamManager: TwilioLiveAudioClassManager) {
+    func liveStreamManagerDidInsertOrDeleteOrMoveParticipants(_ liveStreamManager: LiveStreamManager) {
         applySnapshot(animatingDifferences: true)
     }
     
-    func liveStreamManager(_ liveStreamManager: TwilioLiveAudioClassManager, didUpdateSpeakerAt index: Int) {
+    func liveStreamManager(_ liveStreamManager: LiveStreamManager, didUpdateSpeakerAt index: Int) {
         let indexPath = IndexPath(item: index, section: Section.speakers.rawValue)
         
         guard let cell = collectionView.cellForItem(at: indexPath) as? ParticipantCell else { return }
@@ -387,7 +387,7 @@ extension RoomViewController: TwilioLiveAudioClassDelegate {
         cell.configure(speaker: liveStreamManager.speakers[index])
     }
     
-    func liveStreamManager(_ liveStreamManager: TwilioLiveAudioClassManager, didUpdateAudienceAt index: Int) {
+    func liveStreamManager(_ liveStreamManager: LiveStreamManager, didUpdateAudienceAt index: Int) {
         let indexPath = IndexPath(item: index, section: Section.audience.rawValue)
 
         guard let cell = collectionView.cellForItem(at: indexPath) as? ParticipantCell else { return }
@@ -395,7 +395,7 @@ extension RoomViewController: TwilioLiveAudioClassDelegate {
         cell.configure(audience: liveStreamManager.audience[index])
     }
 
-    func liveStreamManagerDidReceiveSpeakerInvite(_ liveStreamManager: TwilioLiveAudioClassManager) {
+    func liveStreamManagerDidReceiveSpeakerInvite(_ liveStreamManager: LiveStreamManager) {
         let alert = UIAlertController(
             title: "You have been invited to join as a speaker",
             message: nil,
@@ -413,13 +413,13 @@ extension RoomViewController: TwilioLiveAudioClassDelegate {
         present(alert, animated: true, completion: nil)
     }
     
-    func liveStreamManagerWasMutedByModerator(_ liveStreamManager: TwilioLiveAudioClassManager) {
+    func liveStreamManagerWasMutedByModerator(_ liveStreamManager: LiveStreamManager) {
         configureToolbar()
     }
 }
 
 private extension ParticipantCell {
-    func configure(speaker: TwilioLiveAudioClassSpeaker) {
+    func configure(speaker: LiveStreamSpeaker) {
         configure(
             name: speaker.name,
             isModerator: speaker.isModerator,
@@ -428,7 +428,7 @@ private extension ParticipantCell {
         )
     }
     
-    func configure(audience: TwilioLiveAudioClassAudience) {
+    func configure(audience: LiveStreamAudience) {
         configure(
             name: audience.name,
             isModerator: false,

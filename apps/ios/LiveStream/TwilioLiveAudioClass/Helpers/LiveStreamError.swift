@@ -16,7 +16,7 @@
 
 import Foundation
 
-enum TwilioLiveAudioClassError: Error {
+enum LiveStreamError: Error {
     case conversationSyncFailed
     case invalidTimedMetadata
     case liveStreamEndedByModerator
@@ -25,8 +25,8 @@ enum TwilioLiveAudioClassError: Error {
 }
 
 // MARK: - Booleans
-extension TwilioLiveAudioClassError {
-    var isTwilioLiveAudioClassEndedByModeratorError: Bool {
+extension LiveStreamError {
+    var isLiveStreamEndedByModeratorError: Bool {
         if case .liveStreamEndedByModerator = self { return true }
         return false
     }
@@ -38,7 +38,7 @@ extension TwilioLiveAudioClassError {
 }
 
 // MARK: - Descriptions
-extension TwilioLiveAudioClassError: LocalizedError {
+extension LiveStreamError: LocalizedError {
     var errorDescription: String? {
         switch self {
         case .conversationSyncFailed: return "Conversation synchronization failed."

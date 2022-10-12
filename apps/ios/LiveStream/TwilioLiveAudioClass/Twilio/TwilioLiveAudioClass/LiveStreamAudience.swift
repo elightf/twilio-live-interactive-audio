@@ -14,8 +14,8 @@
 //  limitations under the License.
 //
 
-enum TwilioLiveAudioClassState {
-    case disconnected
-    case connecting
-    case connected
+protocol LiveStreamAudience {
+    var identity: String { get }
+    var name: String { get }
+    var isHandRaised: Bool { get }
 }

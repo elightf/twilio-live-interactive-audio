@@ -20,9 +20,9 @@ protocol RoomManagerDelegate {
     func roomManager(_ roomManager: RoomManager, didReceiveMessage message: RoomMessage)
 }
 
-class RoomManager: NSObject, TwilioLiveAudioClassSpeakerSource {
-    weak var delegate: (TwilioLiveAudioClassSpeakerSourceDelegate & RoomManagerDelegate)?
-    var speakers: [TwilioLiveAudioClassSpeaker] { participants }
+class RoomManager: NSObject, LiveStreamSpeakerSource {
+    weak var delegate: (LiveStreamSpeakerSourceDelegate & RoomManagerDelegate)?
+    var speakers: [LiveStreamSpeaker] { participants }
     var isMuted: Bool {
         get {
             guard let micTrack = micTrack else { return false }
@@ -131,16 +131,16 @@ extension RoomManager: RoomDelegate {
     func roomDidDisconnect(room: Room, error: Error?) {
         if let error = error {
             if (error as NSError).isRoomCompletedError {
-                handleError(TwilioLiveAudioClassError.liveStreamEndedByModerator)
+                handleError(LiveStreamError.liveStreamEndedByModerator)
             } else if (error as NSError).isParticipantNotFoundError {
                 // Can receive this error when a speaker is removed by moderator if there is other activity in progress
-                handleError(TwilioLiveAudioClassError.speakerMovedToAudienceByModerator)
+                handleError(LiveStreamError.speakerMovedToAudienceByModerator)
             } else {
                 handleError(error)
             }
         } else {
             // Most of the time there is no error when speaker is removed by moderator
-            handleError(TwilioLiveAudioClassError.speakerMovedToAudienceByModerator)
+            handleError(LiveStreamError.speakerMovedToAudienceByModerator)
         }
     }
     

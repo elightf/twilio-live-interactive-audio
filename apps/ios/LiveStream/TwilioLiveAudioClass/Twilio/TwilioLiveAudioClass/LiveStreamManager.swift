@@ -16,22 +16,22 @@
 
 import Foundation
 
-protocol TwilioLiveAudioClassDelegate: AnyObject {
-    func liveStreamManagerIsConnecting(_ liveStreamManager: TwilioLiveAudioClassManager)
-    func liveStreamManager(_ liveStreamManager: TwilioLiveAudioClassManager, didConnectWithError error: Error?)
-    func liveStreamManager(_ liveStreamManager: TwilioLiveAudioClassManager, didDisconnectWithError error: Error)
-    func liveStreamManagerDidInsertOrDeleteOrMoveParticipants(_ liveStreamManager: TwilioLiveAudioClassManager)
-    func liveStreamManager(_ liveStreamManager: TwilioLiveAudioClassManager, didUpdateSpeakerAt index: Int)
-    func liveStreamManager(_ liveStreamManager: TwilioLiveAudioClassManager, didUpdateAudienceAt index: Int)
-    func liveStreamManagerDidReceiveSpeakerInvite(_ liveStreamManager: TwilioLiveAudioClassManager)
-    func liveStreamManagerWasMutedByModerator(_ liveStreamManager: TwilioLiveAudioClassManager)
+protocol LiveStreamDelegate: AnyObject {
+    func liveStreamManagerIsConnecting(_ liveStreamManager: LiveStreamManager)
+    func liveStreamManager(_ liveStreamManager: LiveStreamManager, didConnectWithError error: Error?)
+    func liveStreamManager(_ liveStreamManager: LiveStreamManager, didDisconnectWithError error: Error)
+    func liveStreamManagerDidInsertOrDeleteOrMoveParticipants(_ liveStreamManager: LiveStreamManager)
+    func liveStreamManager(_ liveStreamManager: LiveStreamManager, didUpdateSpeakerAt index: Int)
+    func liveStreamManager(_ liveStreamManager: LiveStreamManager, didUpdateAudienceAt index: Int)
+    func liveStreamManagerDidReceiveSpeakerInvite(_ liveStreamManager: LiveStreamManager)
+    func liveStreamManagerWasMutedByModerator(_ liveStreamManager: LiveStreamManager)
 }
 
-class TwilioLiveAudioClassManager {
-    weak var delegate: TwilioLiveAudioClassDelegate?
+class LiveStreamManager {
+    weak var delegate: LiveStreamDelegate?
     let roomName: String
-    var speakers: [TwilioLiveAudioClassSpeaker] { speakerSource?.speakers ?? [] }
-    var audience: [TwilioLiveAudioClassAudience] = []
+    var speakers: [LiveStreamSpeaker] { speakerSource?.speakers ?? [] }
+    var audience: [LiveStreamAudience] = []
     var isMuted: Bool {
         get { roomManager.isMuted }
         set { roomManager.isMuted = newValue }
@@ -40,15 +40,15 @@ class TwilioLiveAudioClassManager {
         get { conversationManager.isHandRaised }
         set { conversationManager.isHandRaised = newValue }
     }
-    var userIdentity: String { TwilioLiveAudioClassUserIdentityComponents(name: authStore.userIdentity, role: role).identity }
-    private(set) var state: TwilioLiveAudioClassState = .disconnected
-    private(set) var role: TwilioLiveAudioClassRole
+    var userIdentity: String { LiveStreamUserIdentityComponents(name: authStore.userIdentity, role: role).identity }
+    private(set) var state: LiveStreamState = .disconnected
+    private(set) var role: LiveStreamRole
     private let conversationManager = ConversationManager()
     private let roomManager = RoomManager()
     private let playerManager = PlayerManager()
     private let api = API.shared
     private let authStore = AuthStore.shared
-    private var speakerSource: TwilioLiveAudioClassSpeakerSource?
+    private var speakerSource: LiveStreamSpeakerSource?
     private var error: Error?
 
     init(roomName: String, shouldCreateRoom: Bool) {
@@ -117,19 +117,19 @@ class TwilioLiveAudioClassManager {
     }
     
     /// Moderator send speaker invite to audience member.
-    func sendSpeakerInvite(to audience: TwilioLiveAudioClassAudience) {
+    func sendSpeakerInvite(to audience: LiveStreamAudience) {
         let message = ConversationMessage(messagetype: .speakerInvite, toParticipantIdentity: audience.identity)
         conversationManager.sendMessage(message: message)
     }
     
     /// Moderator mute a speaker.
-    func muteSpeaker(_ speaker: TwilioLiveAudioClassSpeaker) {
+    func muteSpeaker(_ speaker: LiveStreamSpeaker) {
         let message = RoomMessage(messageType: .mute, toParticipantIdentity: speaker.identity)
         roomManager.sendMessage(message)
     }
     
     /// Moderator move speaker to audience.
-    func moveSpeakerToAudience(_ speaker: TwilioLiveAudioClassSpeaker) {
+    func moveSpeakerToAudience(_ speaker: LiveStreamSpeaker) {
         let request = RemoveSpeakerRequest(passcode: authStore.passcode ?? "", roomName: roomName, userIdentity: speaker.identity)
         api.request(request)
     }
@@ -180,7 +180,7 @@ class TwilioLiveAudioClassManager {
     }
 }
 
-extension TwilioLiveAudioClassManager: ConversationManagerDelegate {
+extension LiveStreamManager: ConversationManagerDelegate {
     func conversationManagerDidConnect(_ conversationManager: ConversationManager) {
         switch role {
         case .moderator, .speaker: joinSpeakers()
@@ -242,7 +242,7 @@ extension TwilioLiveAudioClassManager: ConversationManagerDelegate {
     }
 }
 
-extension TwilioLiveAudioClassManager: RoomManagerDelegate {
+extension LiveStreamManager: RoomManagerDelegate {
     func roomManager(_ roomManager: RoomManager, didReceiveMessage message: RoomMessage) {
         guard state != .connecting, message.toParticipantIdentity == userIdentity else { return }
         
@@ -254,8 +254,8 @@ extension TwilioLiveAudioClassManager: RoomManagerDelegate {
     }
 }
 
-extension TwilioLiveAudioClassManager: TwilioLiveAudioClassSpeakerSourceDelegate {
-    func speakerSourceDidConnect(_ speakerSource: TwilioLiveAudioClassSpeakerSource) {
+extension LiveStreamManager: LiveStreamSpeakerSourceDelegate {
+    func speakerSourceDidConnect(_ speakerSource: LiveStreamSpeakerSource) {
         audience = conversationManager.participants.filter { participant in
             !speakers.contains { $0.identity == participant.identity }
         }
@@ -265,8 +265,8 @@ extension TwilioLiveAudioClassManager: TwilioLiveAudioClassSpeakerSourceDelegate
         error = nil
     }
 
-    func speakerSource(_ speakerSource: TwilioLiveAudioClassSpeakerSource, didDisconnectWithError error: Error) {
-        if let error = error as? TwilioLiveAudioClassError, error.isSpeakerMovedToAudienceByModeratorError {
+    func speakerSource(_ speakerSource: LiveStreamSpeakerSource, didDisconnectWithError error: Error) {
+        if let error = error as? LiveStreamError, error.isSpeakerMovedToAudienceByModeratorError {
             self.error = error
             leaveSpeakers()
         } else {
@@ -274,14 +274,14 @@ extension TwilioLiveAudioClassManager: TwilioLiveAudioClassSpeakerSourceDelegate
         }
     }
 
-    func speakerSource(_ speakerSource: TwilioLiveAudioClassSpeakerSource, didAddSpeaker speaker: TwilioLiveAudioClassSpeaker) {
+    func speakerSource(_ speakerSource: LiveStreamSpeakerSource, didAddSpeaker speaker: LiveStreamSpeaker) {
         guard state != .connecting else { return }
 
         audience.removeAll { $0.identity == speaker.identity }
         delegate?.liveStreamManagerDidInsertOrDeleteOrMoveParticipants(self)
     }
     
-    func speakerSource(_ speakerSource: TwilioLiveAudioClassSpeakerSource, didRemoveSpeaker speaker: TwilioLiveAudioClassSpeaker) {
+    func speakerSource(_ speakerSource: LiveStreamSpeakerSource, didRemoveSpeaker speaker: LiveStreamSpeaker) {
         guard
             state != .connecting,
             let participant = conversationManager.participants.first(where: { $0.identity == speaker.identity })
@@ -297,7 +297,7 @@ extension TwilioLiveAudioClassManager: TwilioLiveAudioClassSpeakerSourceDelegate
         }
     }
 
-    func speakerSource(_ speakerSource: TwilioLiveAudioClassSpeakerSource, didUpdateSpeaker speaker: TwilioLiveAudioClassSpeaker) {
+    func speakerSource(_ speakerSource: LiveStreamSpeakerSource, didUpdateSpeaker speaker: LiveStreamSpeaker) {
         guard
             state != .connecting,
             let index = speakers.firstIndex(where: { $0.identity == speaker.identity })

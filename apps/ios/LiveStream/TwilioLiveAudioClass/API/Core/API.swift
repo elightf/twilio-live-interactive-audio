@@ -65,7 +65,7 @@ class API {
                     return
                 }
 
-                completion?(.failure(TwilioLiveAudioClassError.other(message: errorResponse.error.explanation)))
+                completion?(.failure(LiveStreamError.other(message: errorResponse.error.explanation)))
             }
         }
     }

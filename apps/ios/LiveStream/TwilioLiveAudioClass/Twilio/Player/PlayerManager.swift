@@ -17,9 +17,9 @@
 import AVFoundation
 import TwilioLivePlayer
 
-class PlayerManager: NSObject, TwilioLiveAudioClassSpeakerSource {
-    weak var delegate: TwilioLiveAudioClassSpeakerSourceDelegate?
-    var speakers: [TwilioLiveAudioClassSpeaker] { participants }
+class PlayerManager: NSObject, LiveStreamSpeakerSource {
+    weak var delegate: LiveStreamSpeakerSourceDelegate?
+    var speakers: [LiveStreamSpeaker] { participants }
     private let audioSession = AVAudioSession.sharedInstance()
     private let telemetryLogger = PlayerTelemetryLogger()
     private let jsonDecoder = JSONDecoder()
@@ -88,7 +88,7 @@ extension PlayerManager: PlayerDelegate {
         case .ready:
             play()
         case .ended:
-            handleError(TwilioLiveAudioClassError.liveStreamEndedByModerator)
+            handleError(LiveStreamError.liveStreamEndedByModerator)
         case .idle, .buffering, .playing:
             break
         @unknown default:
@@ -106,7 +106,7 @@ extension PlayerManager: PlayerDelegate {
     ///   For example if for some reason the media composer does not send any timed metadata.
     func playerDidReceiveTimedMetadata(player: Player, metadata: TimedMetadata) {
         guard let data = metadata.metadata.data(using: .utf8) else {
-            handleError(TwilioLiveAudioClassError.invalidTimedMetadata)
+            handleError(LiveStreamError.invalidTimedMetadata)
             return
         }
         

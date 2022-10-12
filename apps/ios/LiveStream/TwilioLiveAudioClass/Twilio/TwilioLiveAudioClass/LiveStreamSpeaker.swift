@@ -14,8 +14,10 @@
 //  limitations under the License.
 //
 
-protocol TwilioLiveAudioClassAudience {
+protocol LiveStreamSpeaker {
     var identity: String { get }
     var name: String { get }
-    var isHandRaised: Bool { get }
+    var isModerator: Bool { get }
+    var isMuted: Bool { get }
+    var audioLevel: Int { get }
 }

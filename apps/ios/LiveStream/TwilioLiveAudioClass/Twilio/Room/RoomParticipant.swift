@@ -16,10 +16,10 @@
 
 import TwilioVideo
 
-class RoomParticipant: TwilioLiveAudioClassSpeaker {
+class RoomParticipant: LiveStreamSpeaker {
     var identity: String { participant.identity }
-    var name: String { TwilioLiveAudioClassUserIdentityComponents(identity: identity).name }
-    var isModerator: Bool { TwilioLiveAudioClassUserIdentityComponents(identity: identity).role == .moderator }
+    var name: String { LiveStreamUserIdentityComponents(identity: identity).name }
+    var isModerator: Bool { LiveStreamUserIdentityComponents(identity: identity).role == .moderator }
     var isMuted: Bool {
         guard let micTrack = participant.audioTracks.first else { return true }
 

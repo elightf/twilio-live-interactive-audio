@@ -14,10 +14,8 @@
 //  limitations under the License.
 //
 
-protocol TwilioLiveAudioClassSpeaker {
-    var identity: String { get }
-    var name: String { get }
-    var isModerator: Bool { get }
-    var isMuted: Bool { get }
-    var audioLevel: Int { get }
+enum LiveStreamRole {
+    case moderator
+    case speaker
+    case audience
 }

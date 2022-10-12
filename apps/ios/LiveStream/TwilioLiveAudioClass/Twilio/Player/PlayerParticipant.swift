@@ -14,7 +14,7 @@
 //  limitations under the License.
 //
 
-struct PlayerParticipant: TwilioLiveAudioClassSpeaker {
+struct PlayerParticipant: LiveStreamSpeaker {
     let identity: String
     let name: String
     let isModerator: Bool
@@ -24,7 +24,7 @@ struct PlayerParticipant: TwilioLiveAudioClassSpeaker {
     // This is what timed metadata provides
     init(identity: String, audioLevel: Int) {
         self.identity = identity
-        let userIdentityComponents = TwilioLiveAudioClassUserIdentityComponents(identity: identity)
+        let userIdentityComponents = LiveStreamUserIdentityComponents(identity: identity)
         name = userIdentityComponents.name
         isModerator = userIdentityComponents.role == .moderator
         isMuted = audioLevel == -1

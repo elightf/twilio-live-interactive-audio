@@ -77,12 +77,12 @@ class RoomListViewController: UITableViewController {
             let roomViewController = navigationController.viewControllers.first as! RoomViewController
             
             if let roomName = roomName {
-                roomViewController.liveStreamManager = TwilioLiveAudioClassManager(roomName: roomName, shouldCreateRoom: true)
+                roomViewController.liveStreamManager = LiveStreamManager(roomName: roomName, shouldCreateRoom: true)
                 self.roomName = nil
             } else {
                 let selectedRow = tableView.indexPathForSelectedRow!
                 let roomName = tableView.cellForRow(at: selectedRow)?.textLabel?.text ?? ""
-                roomViewController.liveStreamManager = TwilioLiveAudioClassManager(roomName: roomName, shouldCreateRoom: false)
+                roomViewController.liveStreamManager = LiveStreamManager(roomName: roomName, shouldCreateRoom: false)
                 tableView.deselectRow(at: selectedRow, animated: true)
             }
         default:

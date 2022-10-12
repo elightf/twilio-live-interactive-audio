@@ -14,8 +14,8 @@
 //  limitations under the License.
 //
 
-enum TwilioLiveAudioClassRole {
-    case moderator
-    case speaker
-    case audience
+enum LiveStreamState {
+    case disconnected
+    case connecting
+    case connected
 }

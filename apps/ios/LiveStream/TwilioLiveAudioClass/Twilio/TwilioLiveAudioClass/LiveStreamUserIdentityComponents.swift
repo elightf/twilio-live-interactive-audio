@@ -14,12 +14,12 @@
 //  limitations under the License.
 //
 
-struct TwilioLiveAudioClassUserIdentityComponents {
+struct LiveStreamUserIdentityComponents {
     let identity: String
     let name: String
-    let role: TwilioLiveAudioClassRole
+    let role: LiveStreamRole
     
-    init(name: String, role: TwilioLiveAudioClassRole) {
+    init(name: String, role: LiveStreamRole) {
         self.name = name
         self.role = role
         identity = role.identityPrefix + name
@@ -32,7 +32,7 @@ struct TwilioLiveAudioClassUserIdentityComponents {
     }
 }
 
-private extension TwilioLiveAudioClassRole {
+private extension LiveStreamRole {
     var identityPrefix: String {
         switch self {
         case .moderator: return "m_"

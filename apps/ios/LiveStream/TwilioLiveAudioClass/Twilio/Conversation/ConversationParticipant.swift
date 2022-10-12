@@ -16,9 +16,9 @@
 
 import TwilioConversationsClient
 
-class ConversationParticipant: TwilioLiveAudioClassAudience {
+class ConversationParticipant: LiveStreamAudience {
     var identity: String { participant.identity! }
-    var name: String { TwilioLiveAudioClassUserIdentityComponents(identity: identity).name }
+    var name: String { LiveStreamUserIdentityComponents(identity: identity).name }
     var isHandRaised: Bool {
         get {
             participant.attributes()?.dictionary?[handRaisedKey] as? Bool ?? false
